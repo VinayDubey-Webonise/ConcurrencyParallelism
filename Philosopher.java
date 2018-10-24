@@ -35,32 +35,7 @@ public class Philosopher implements Runnable {
             Printer.show(Thread.currentThread().getName() + " Thinking");
         }
     }
-
-    /*@Override
-    public void run() {
-        while (true) {
-            carryTask();
-            if (lock.tryLock()) {
-                try {
-                    synchronized (forkLeft) {
-                        Printer.show(Thread.currentThread().getName() + " has picked left fork");
-                        carryTask();
-                        synchronized (forkRight) {
-                            Printer.show(Thread.currentThread().getName() + " has picked right fork");
-                            carryTask();
-                        }
-                    }
-                    Printer.show(Thread.currentThread().getName() + " Thinking");
-                } finally {
-                    carryTask();
-                    lock.unlock();
-                }
-            } else {
-                return;
-            }
-        }
-    }*/
-
+    
     private void carryTask() {
         try {
             Thread.sleep(((int) (Math.random() * 100)));
