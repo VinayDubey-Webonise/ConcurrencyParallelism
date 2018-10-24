@@ -11,12 +11,17 @@ public class Fork {
         this.forkStatus = forkStatus;
     }
 
-    public boolean getForkStatus() {
+    public Fork getForkStatus() {
         if (lock.tryLock()) {
-            return true;
+            setLock();
+            return this;
         } else {
-            return false;
+            return null;
         }
+    }
+
+    public void setLock() {
+        lock.lock();
     }
 
     public void removeLock() {
