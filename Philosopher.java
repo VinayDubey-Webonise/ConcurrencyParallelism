@@ -16,9 +16,9 @@ public class Philosopher implements Runnable {
     public void run() {
         while (true) {
             carryTask();
-            if (forkLeft.getForkStatus()) {
+            if (forkLeft.getForkStatus()!=null) {
                 Printer.show(Thread.currentThread().getName() + " has picked left fork");
-                if (forkRight.getForkStatus()) {
+                if (forkRight.getForkStatus()!=null) {
                     Printer.show(Thread.currentThread().getName() + " has picked right fork");
                     Printer.show(Thread.currentThread().getName() + " is eating");
                     carryTask();
