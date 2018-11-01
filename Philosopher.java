@@ -1,11 +1,8 @@
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
 public class Philosopher implements Runnable {
 
     private final Fork forkLeft;
     private Fork forkRight;
-    static Lock lock = new ReentrantLock();
+    private static final int randomCounter=100;
 
     Philosopher(Fork forkLeft, Fork forkRight) {
         this.forkLeft = forkLeft;
@@ -16,31 +13,23 @@ public class Philosopher implements Runnable {
     public void run() {
         while (true) {
             carryTask();
-            if (forkLeft.getForkStatus()!=null) {
+            synchronized (forkLeft) {
                 Printer.show(Thread.currentThread().getName() + " has picked left fork");
-                if (forkRight.getForkStatus()!=null) {
+                carryTask();
+                synchronized (forkRight) {
                     Printer.show(Thread.currentThread().getName() + " has picked right fork");
-                    Printer.show(Thread.currentThread().getName() + " is eating");
                     carryTask();
-                    forkLeft.removeLock();
-                    forkRight.removeLock();
-                    Printer.show(Thread.currentThread().getName() + " Keeping both fork");
-                } else {
-                    forkLeft.removeLock();
-                    Printer.show(Thread.currentThread().getName() + " Keeping left fork");
                 }
-            } else {
-                forkLeft.removeLock();
             }
             Printer.show(Thread.currentThread().getName() + " Thinking");
         }
     }
-    
+
     private void carryTask() {
         try {
-            Thread.sleep(((int) (Math.random() * 100)));
-        } catch (InterruptedException e) {
-            Printer.show("Error: " + e);
+            Thread.sleep(((int) (Math.random() * randomCounter)));
+        } catch (InterruptedException interruptedException) {
+            Printer.show("Error: " + interruptedException);
         }
     }
 }
